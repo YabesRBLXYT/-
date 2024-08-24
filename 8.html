@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Linkvertise Clone</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+        .container {
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 400px;
+            margin: auto;
+        }
+        .button {
+            background-color: #d3d3d3; /* Grey color */
+            color: #888; /* Darker grey text color */
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px 2px;
+            border-radius: 5px;
+            cursor: not-allowed; /* Cursor shows disabled */
+            border: none;
+        }
+        .button.enabled {
+            background-color: #4CAF50; /* Green color when enabled */
+            color: white;
+            cursor: pointer; /* Cursor changes to pointer when enabled */
+        }
+        .button.enabled:hover {
+            background-color: #45a049; /* Darker green on hover */
+        }
+        .timer {
+            font-size: 18px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Wait a moment...</h1>
+        <p>Please wait for a few seconds before you can continue to your destination.</p>
+        <div class="timer" id="timer">10</div>
+        <button class="button" id="continueButton" disabled>Continue to...</button>
+    </div>
+
+    <script>
+        const continueButton = document.getElementById('continueButton');
+        const timerElement = document.getElementById('timer');
+        const destinationId = 'h'; // Set the ID here
+
+        // Load destination data
+        fetch('data.json')
+            .then(response => response.json())
+            .then(data => {
+                const destination = data[destinationId];
+                if (destination) {
+                    // Set button text immediately
+                    continueButton.textContent = `Continue to ${destination.name}`;
+
+                    // Enable button and redirect when clicked
+                    continueButton.addEventListener('click', () => {
+                        window.location.href = destination.url;
+                    });
+                }
+            });
+
+        // Countdown logic
+        let countdown = 10;
+        const interval = setInterval(() => {
+            countdown--;
+            timerElement.textContent = countdown;
+
+            if (countdown <= 0) {
+                clearInterval(interval);
+                continueButton.disabled = false;
+                continueButton.classList.add('enabled'); // Add class to enable button
+            }
+        }, 1000);
+    </script>
+</body>
+          </html>
