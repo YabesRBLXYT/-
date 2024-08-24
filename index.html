@@ -47,11 +47,28 @@
     </div>
 
     <script>
-        let countdown = 10;
-        const timerElement = document.getElementById('timer');
         const continueButton = document.getElementById('continueButton');
-        const destinationId = 'abcd';  // Set the ID here
+        const timerElement = document.getElementById('timer');
+        const destinationId = 'abcd'; // Set the ID here
 
+        // Load destination data
+        fetch('data.json')
+            .then(response => response.json())
+            .then(data => {
+                const destination = data[destinationId];
+                if (destination) {
+                    // Set button text immediately
+                    continueButton.textContent = `Continue to ${destination.name}`;
+
+                    // Enable button and redirect when clicked
+                    continueButton.addEventListener('click', () => {
+                        window.location.href = destination.url;
+                    });
+                }
+            });
+
+        // Countdown logic
+        let countdown = 10;
         const interval = setInterval(() => {
             countdown--;
             timerElement.textContent = countdown;
@@ -59,31 +76,8 @@
             if (countdown <= 0) {
                 clearInterval(interval);
                 continueButton.disabled = false;
-                
-                // Update button text to include destination name
-                fetch('data.json')
-                    .then(response => response.json())
-                    .then(data => {
-                        const destination = data[destinationId];
-                        if (destination) {
-                            continueButton.textContent = `Continue to ${destination.name}`;
-                        }
-                    });
             }
         }, 1000);
-
-        continueButton.addEventListener('click', () => {
-            fetch('data.json')
-                .then(response => response.json())
-                .then(data => {
-                    const destination = data[destinationId];
-                    if (destination) {
-                        window.location.href = destination.url;
-                    } else {
-                        alert('Failed to retrieve the link. Please try again later.');
-                    }
-                });
-        });
     </script>
 </body>
 </html>
