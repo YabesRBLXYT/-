@@ -14,13 +14,21 @@
             padding: 0;
         }
         li {
-            margin-bottom: 10px;
+            margin-bottom: 20px;
         }
         a {
             text-decoration: none;
             color: #1a0dab;
         }
         a:hover {
+            text-decoration: underline;
+        }
+        .git-link {
+            display: block;
+            margin-top: 5px;
+            color: #007bff;
+        }
+        .git-link:hover {
             text-decoration: underline;
         }
         #content {
@@ -89,7 +97,15 @@
                             anchor.href = link.url;
                             anchor.textContent = link.name;
                             anchor.target = '_blank'; // Open links in a new tab
+
+                            const gitLink = document.createElement('a');
+                            gitLink.href = link.git;
+                            gitLink.textContent = 'Git Link';
+                            gitLink.className = 'git-link';
+                            gitLink.target = '_blank'; // Open links in a new tab
+
                             listItem.appendChild(anchor);
+                            listItem.appendChild(gitLink);
                             linkList.appendChild(listItem);
                         }
                     }
