@@ -63,7 +63,7 @@
 
         continueButton.addEventListener('click', () => {
             // Request to the server-side script to get the destination URL
-            fetch('/get-link')
+            fetch('/server.js')
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
