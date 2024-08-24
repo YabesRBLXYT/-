@@ -18,8 +18,8 @@
             margin: auto;
         }
         .button {
-            background-color: #4CAF50;
-            color: white;
+            background-color: #d3d3d3; /* Grey color */
+            color: #888; /* Darker grey text color */
             padding: 10px 20px;
             text-align: center;
             text-decoration: none;
@@ -27,10 +27,16 @@
             font-size: 16px;
             margin: 10px 2px;
             border-radius: 5px;
-            cursor: pointer;
+            cursor: not-allowed; /* Cursor shows disabled */
+            border: none;
         }
-        .button:hover {
-            background-color: #45a049;
+        .button.enabled {
+            background-color: #4CAF50; /* Green color when enabled */
+            color: white;
+            cursor: pointer; /* Cursor changes to pointer when enabled */
+        }
+        .button.enabled:hover {
+            background-color: #45a049; /* Darker green on hover */
         }
         .timer {
             font-size: 18px;
@@ -72,10 +78,11 @@
         const interval = setInterval(() => {
             countdown--;
             timerElement.textContent = countdown;
-            
+
             if (countdown <= 0) {
                 clearInterval(interval);
                 continueButton.disabled = false;
+                continueButton.classList.add('enabled'); // Add class to enable button
             }
         }, 1000);
     </script>
