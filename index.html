@@ -89,26 +89,25 @@
                 .then(response => response.json())
                 .then(data => {
                     const linkList = document.getElementById('linkList');
-                    for (const key in data) {
-                        if (data.hasOwnProperty(key)) {
-                            const link = data[key];
-                            const listItem = document.createElement('li');
-                            const anchor = document.createElement('a');
-                            anchor.href = link.url;
-                            anchor.textContent = link.name;
-                            anchor.target = '_blank'; // Open links in a new tab
+                    Object.keys(data).forEach(key => {
+                        const link = data[key];
+                        const listItem = document.createElement('li');
 
-                            const gitLink = document.createElement('a');
-                            gitLink.href = link.git;
-                            gitLink.textContent = 'Git Link';
-                            gitLink.className = 'git-link';
-                            gitLink.target = '_blank'; // Open links in a new tab
+                        const nameAnchor = document.createElement('a');
+                        nameAnchor.href = link.url;
+                        nameAnchor.textContent = link.name;
+                        nameAnchor.target = '_blank'; // Open links in a new tab
 
-                            listItem.appendChild(anchor);
-                            listItem.appendChild(gitLink);
-                            linkList.appendChild(listItem);
-                        }
-                    }
+                        const gitAnchor = document.createElement('a');
+                        gitAnchor.href = link.git;
+                        gitAnchor.textContent = 'Git Link';
+                        gitAnchor.className = 'git-link';
+                        gitAnchor.target = '_blank'; // Open links in a new tab
+
+                        listItem.appendChild(nameAnchor);
+                        listItem.appendChild(gitAnchor);
+                        linkList.appendChild(listItem);
+                    });
                 })
                 .catch(error => console.error('Error loading JSON data:', error));
         }
