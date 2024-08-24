@@ -3,7 +3,7 @@ const app = express();
 const port = 3000;
 
 // Simpan link tujuan di sini atau dapat diambil dari database
-const destinationLink = 'https://yourdestination.com';
+const destinationLink = 'https://roblox.com';
 
 app.use(express.static('public')); // Menyajikan file HTML dari folder 'public'
 
