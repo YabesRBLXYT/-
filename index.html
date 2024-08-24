@@ -23,31 +23,79 @@
         a:hover {
             text-decoration: underline;
         }
+        #content {
+            display: none;
+        }
+        #passwordPrompt {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        #passwordPrompt input {
+            margin-bottom: 10px;
+        }
+        #errorMessage {
+            color: red;
+            display: none;
+        }
     </style>
 </head>
 <body>
-    <h1>Link List</h1>
-    <ul id="linkList"></ul>
+    <div id="passwordPrompt">
+        <h1>Enter Password</h1>
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="checkPassword()">Submit</button>
+        <p id="errorMessage">Incorrect password, please try again.</p>
+    </div>
+    <div id="content">
+        <h1>Link List</h1>
+        <ul id="linkList"></ul>
+    </div>
 
     <script>
-        fetch('data.json')
+        let correctPassword = '';
+
+        // Load the password from password.json
+        fetch('password.json')
             .then(response => response.json())
             .then(data => {
-                const linkList = document.getElementById('linkList');
-                for (const key in data) {
-                    if (data.hasOwnProperty(key)) {
-                        const link = data[key];
-                        const listItem = document.createElement('li');
-                        const anchor = document.createElement('a');
-                        anchor.href = link.url;
-                        anchor.textContent = link.name;
-                        anchor.target = '_blank'; // Open links in a new tab
-                        listItem.appendChild(anchor);
-                        linkList.appendChild(listItem);
-                    }
-                }
+                correctPassword = data.password;
             })
-            .catch(error => console.error('Error loading JSON data:', error));
+            .catch(error => console.error('Error loading password JSON:', error));
+
+        function checkPassword() {
+            const inputPassword = document.getElementById('password').value;
+            if (inputPassword === correctPassword) {
+                document.getElementById('passwordPrompt').style.display = 'none';
+                document.getElementById('content').style.display = 'block';
+                loadLinks();
+            } else {
+                document.getElementById('errorMessage').style.display = 'block';
+            }
+        }
+
+        function loadLinks() {
+            fetch('data.json')
+                .then(response => response.json())
+                .then(data => {
+                    const linkList = document.getElementById('linkList');
+                    for (const key in data) {
+                        if (data.hasOwnProperty(key)) {
+                            const link = data[key];
+                            const listItem = document.createElement('li');
+                            const anchor = document.createElement('a');
+                            anchor.href = link.url;
+                            anchor.textContent = link.name;
+                            anchor.target = '_blank'; // Open links in a new tab
+                            listItem.appendChild(anchor);
+                            linkList.appendChild(listItem);
+                        }
+                    }
+                })
+                .catch(error => console.error('Error loading JSON data:', error));
+        }
     </script>
 </body>
 </html>
