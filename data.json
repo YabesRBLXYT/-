@@ -1,12 +1,12 @@
 {
-    "abcd": {
+    "a": {
         "url": "https://roblox.com",
         "name": "roblox",
-        "git": "https://yabesrblxyt.github.io/yabes-shortlink/1.html",
+        "git": "https://yabesrblxyt.github.io/yabes-shortlink/1.html"
     },
     "efgh": {
         "url": "https://anotherdestination.com",
         "name": "Another Destination",
-        "git": "https://yabesrblxyt.github.io/yabes-shortlink/2.html",
+        "git": "https://yabesrblxyt.github.io/yabes-shortlink/2.html"
     }
 }
