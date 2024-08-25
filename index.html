@@ -111,7 +111,7 @@
                 .then(text => {
                     const parser = new DOMParser();
                     const doc = parser.parseFromString(text, 'text/html');
-                    correctPasswordHash = doc.getElementById('password').textContent;
+                    correctPasswordHash = doc.getElementById('password').textContent.trim();
                 })
                 .catch(error => console.error('Error loading password HTML:', error));
         }
@@ -163,4 +163,5 @@
         }
     </script>
 </body>
-</html>
+    </html>
+    
