@@ -3,50 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Link List</title>
+    <title>Link List with Secure Access</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        li {
-            margin-bottom: 20px;
-        }
-        a {
-            text-decoration: none;
-            color: #1a0dab;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-        .git-link {
-            display: block;
-            margin-top: 5px;
-            color: #007bff;
-        }
-        .git-link:hover {
-            text-decoration: underline;
-        }
-        #content {
-            display: none;
-        }
-        #passwordPrompt {
+            background-color: #f4f4f4;
+            color: #333;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             height: 100vh;
+            margin: 0;
         }
-        #passwordPrompt input {
+
+        #passwordPrompt, #content {
+            display: none;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #passwordPrompt {
+            display: block;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        input[type="password"] {
+            padding: 10px;
+            width: 200px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
             margin-bottom: 10px;
         }
+
+        button {
+            padding: 10px 15px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
         #errorMessage {
             color: red;
             display: none;
+            margin-top: 10px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin: 10px 0;
+        }
+
+        li a {
+            text-decoration: none;
+            color: #007BFF;
+        }
+
+        li a:hover {
+            text-decoration: underline;
+        }
+
+        li .git-link {
+            display: block;
+            margin-top: 5px;
+            font-size: 0.9em;
+            color: #555;
         }
     </style>
 </head>
@@ -62,20 +98,34 @@
         <ul id="linkList"></ul>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
     <script>
-        let correctPassword = '';
+        let correctPasswordHash = '';
 
-        // Load the password from password.json
-        fetch('password.json')
-            .then(response => response.json())
-            .then(data => {
-                correctPassword = data.password;
-            })
-            .catch(error => console.error('Error loading password JSON:', error));
+        // Ganti URL ini dengan URL dari halaman password yang telah Anda simpan secara online
+        const passwordUrl = 'https://yabes-desu.w3spaces.com/hj.html';
+
+        function fetchPasswordHash() {
+            fetch(passwordUrl)
+                .then(response => response.text())
+                .then(text => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(text, 'text/html');
+                    correctPasswordHash = doc.getElementById('password').textContent;
+                })
+                .catch(error => console.error('Error loading password HTML:', error));
+        }
+
+        fetchPasswordHash();
 
         function checkPassword() {
             const inputPassword = document.getElementById('password').value;
-            if (inputPassword === correctPassword) {
+            // Hash pertama
+            const firstHash = CryptoJS.MD5(inputPassword).toString();
+            // Hash kedua
+            const doubleHash = CryptoJS.MD5(firstHash).toString();
+            // Bandingkan dengan hash yang tersimpan
+            if (doubleHash === correctPasswordHash) {
                 document.getElementById('passwordPrompt').style.display = 'none';
                 document.getElementById('content').style.display = 'block';
                 loadLinks();
@@ -100,7 +150,7 @@
 
                         const gitAnchor = document.createElement('a');
                         gitAnchor.href = link.git;
-                        gitAnchor.textContent = 'Open Link';
+                        gitAnchor.textContent = 'Git Link';
                         gitAnchor.className = 'git-link';
                         gitAnchor.target = '_blank'; // Open links in a new tab
 
