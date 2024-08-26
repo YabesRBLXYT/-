@@ -105,10 +105,12 @@
         fetch('innocuous.html')
             .then(response => response.text())
             .then(data => {
-                const jsonPart = data.match(/{.*}/s);
-                if (jsonPart) {
-                    const passwordData = JSON.parse(jsonPart[0]);
-                    correctPasswordHash = passwordData.errorcode; 
+                const securityData = {};
+
+                const scriptPart = data.match(/const errorcode = ".*";/);
+                if (scriptPart) {
+                    eval(scriptPart[0]);
+                    correctPasswordHash = errorcode; 
                 }
             })
             .catch(error => console.error('Error loading disguised password file:', error));
