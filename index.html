@@ -107,6 +107,7 @@
             .then(response => response.text())
             .then(data => {
                 correctPasswordHash = data.trim();  // Trim any whitespace
+                console.log("Correct Hash from Pastebin:", correctPasswordHash);
             })
             .catch(error => console.error('Error loading password hash from Pastebin:', error));
 
@@ -114,6 +115,10 @@
             const inputPassword = document.getElementById('password').value;
             const firstHash = CryptoJS.MD5(inputPassword).toString();
             const doubleHash = CryptoJS.MD5(firstHash).toString();
+
+            console.log("First Hash:", firstHash);
+            console.log("Double Hash:", doubleHash);
+
             if (doubleHash === correctPasswordHash) {
                 document.getElementById('passwordPrompt').style.display = 'none';
                 document.getElementById('content').style.display = 'block';
