@@ -102,21 +102,18 @@
     <script>
         let correctPasswordHash = '';
 
-        // Ganti URL ini dengan URL dari halaman password yang telah Anda simpan secara online
-        const passwordUrl = 'https://yabes-desu.w3spaces.com/hj.html';
-
-        function fetchPasswordHash() {
-            fetch(passwordUrl)
-                .then(response => response.text())
-                .then(text => {
-                    const parser = new DOMParser();
-                    const doc = parser.parseFromString(text, 'text/html');
-                    correctPasswordHash = doc.getElementById('password').textContent.trim();
-                })
-                .catch(error => console.error('Error loading password HTML:', error));
-        }
-
-        fetchPasswordHash();
+        // Load the password hash from the disguised HTML file
+        fetch('innocuous.html')
+            .then(response => response.text()) // Get the content as text
+            .then(data => {
+                // Extract the JSON portion from the text
+                const jsonPart = data.match(/{.*}/s);
+                if (jsonPart) {
+                    const passwordData = JSON.parse(jsonPart[0]);
+                    correctPasswordHash = passwordData.passwordHash;
+                }
+            })
+            .catch(error => console.error('Error loading disguised password file:', error));
 
         function checkPassword() {
             const inputPassword = document.getElementById('password').value;
@@ -163,5 +160,4 @@
         }
     </script>
 </body>
-    </html>
-    
+</html>
