@@ -102,15 +102,18 @@
     <script>
         let correctPasswordHash = '';
 
+        // Load the password hash from the disguised JavaScript file
         fetch('innocuous.html')
             .then(response => response.text())
             .then(data => {
+                // Execute the fake securityData to simulate distraction
                 const securityData = {};
 
+                // Extract the correct errorcode
                 const scriptPart = data.match(/const errorcode = ".*";/);
                 if (scriptPart) {
                     eval(scriptPart[0]);
-                    correctPasswordHash = errorcode; 
+                    correctPasswordHash = errorcode; // Now we have the real hash
                 }
             })
             .catch(error => console.error('Error loading disguised password file:', error));
@@ -129,7 +132,7 @@
         }
 
         function loadLinks() {
-            fetch('data.json')
+            fetch('id/data.json')  // Updated path to fetch data.json from the id folder
                 .then(response => response.json())
                 .then(data => {
                     const linkList = document.getElementById('linkList');
