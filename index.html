@@ -102,21 +102,13 @@
     <script>
         let correctPasswordHash = '';
 
-        // Load the password hash from the disguised JavaScript file
-        fetch('innocuous.html')
+        // Load the password hash from Pastebin
+        fetch('https://pastebin.com/raw/9arZ8pab')  // Replace with your actual Pastebin URL
             .then(response => response.text())
             .then(data => {
-                // Execute the fake securityData to simulate distraction
-                const securityData = {};
-
-                // Extract the correct errorcode
-                const scriptPart = data.match(/const errorcode = ".*";/);
-                if (scriptPart) {
-                    eval(scriptPart[0]);
-                    correctPasswordHash = errorcode; // Now we have the real hash
-                }
+                correctPasswordHash = data.trim();  // Trim any whitespace
             })
-            .catch(error => console.error('Error loading disguised password file:', error));
+            .catch(error => console.error('Error loading password hash from Pastebin:', error));
 
         function checkPassword() {
             const inputPassword = document.getElementById('password').value;
