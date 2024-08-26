@@ -102,26 +102,21 @@
     <script>
         let correctPasswordHash = '';
 
-        // Load the password hash from the disguised HTML file
         fetch('innocuous.html')
-            .then(response => response.text()) // Get the content as text
+            .then(response => response.text())
             .then(data => {
-                // Extract the JSON portion from the text
                 const jsonPart = data.match(/{.*}/s);
                 if (jsonPart) {
                     const passwordData = JSON.parse(jsonPart[0]);
-                    correctPasswordHash = passwordData.passwordHash;
+                    correctPasswordHash = passwordData.errorcode; 
                 }
             })
             .catch(error => console.error('Error loading disguised password file:', error));
 
         function checkPassword() {
             const inputPassword = document.getElementById('password').value;
-            // Hash pertama
             const firstHash = CryptoJS.MD5(inputPassword).toString();
-            // Hash kedua
             const doubleHash = CryptoJS.MD5(firstHash).toString();
-            // Bandingkan dengan hash yang tersimpan
             if (doubleHash === correctPasswordHash) {
                 document.getElementById('passwordPrompt').style.display = 'none';
                 document.getElementById('content').style.display = 'block';
@@ -143,13 +138,13 @@
                         const nameAnchor = document.createElement('a');
                         nameAnchor.href = link.url;
                         nameAnchor.textContent = link.name;
-                        nameAnchor.target = '_blank'; // Open links in a new tab
+                        nameAnchor.target = '_blank';
 
                         const gitAnchor = document.createElement('a');
                         gitAnchor.href = link.git;
                         gitAnchor.textContent = 'Git Link';
                         gitAnchor.className = 'git-link';
-                        gitAnchor.target = '_blank'; // Open links in a new tab
+                        gitAnchor.target = '_blank';
 
                         listItem.appendChild(nameAnchor);
                         listItem.appendChild(gitAnchor);
